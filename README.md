@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seobin’s Dream Cafe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #fdfbf7;
+            color: #4a3b32;
+            line-height: 1.6;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* 헤더 영역 */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background-color: #fff;
+            border-bottom: 1px solid #efebe9;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #6d4c41;
+            letter-spacing: 1px;
+        }
+
+        /* 오른쪽 상단 ⋮ 메뉴 버튼 */
+        .menu-trigger-btn {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #4a3b32;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .menu-trigger-btn:hover {
+            background-color: #f5f0eb;
+        }
+
+        /* 섹션별 스타일 */
+        section {
+            padding: 100px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+            border-bottom: 1px solid #efebe9;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            color: white;
+            padding: 150px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        h2.section-title {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: #5d4037;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .menu-card {
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        .menu-card h3 {
+            margin-bottom: 10px;
+            color: #4e342e;
+        }
+
+        .menu-card p {
+            color: #795548;
+            font-size: 0.95rem;
+        }
+
+        /* 푸터 */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #efebe9;
+            color: #6d4c41;
+            font-size: 0.9rem;
+        }
+
+        /* ================= 사이드 메뉴 (Drawer) 스타일 ================= */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 999;
+        }
+
+        .sidebar-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -380px;
+            width: 380px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+            transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .sidebar-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .sidebar-content {
+            padding: 25px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        /* 사이드 메뉴 리스트 (Home / Menu / Mood / About / Instagram) */
+        .side-nav-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .side-nav-list li {
+            margin-bottom: 15px;
+        }
+
+        .side-nav-list a {
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #4a3b32;
+            transition: color 0.2s;
+            display: block;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .side-nav-list a:hover {
+            color: #fff;
+            background-color: #6d4c41;
+        }
+
+        /* Instagram 클릭 시 노출될 가상 인스타 화면 (@seobins_dreamcafe) */
+        .insta-view {
+            display: none;
+            background-color: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 8px;
+            padding: 15px;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .insta-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .insta-profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .insta-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #
